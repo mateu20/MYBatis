@@ -4,7 +4,61 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper">
+<select parameterType="map" id="consultarClientes" resultMap="ClienteResult">
+		select    
+    c.nombre,
+    c.documento,
+    c.telefono,
+    c.direccion,
+    c.email,
+    c.vetado,    
+    ir.id ,
+    ir.fechainiciorenta ,
+    ir.fechafinrenta ,    
+    i.id ,
+    i.nombre ,
+    i.descripcion ,
+    i.fechalanzamiento ,
+    i.tarifaxdia ,
+    i.formatorenta ,
+    i.genero ,        
+    ti.id ,
+    ti.descripcion     
+    FROM VI_CLIENTES as c 
+    left join VI_ITEMRENTADO as ir on c.documento=ir.CLIENTES_documento 
+    left join VI_ITEMS as i on ir.ITEMS_id=i.id 
+    left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id 
+</select>
 
+     <resultMap type='Cliente' id='ClienteResult'>
+    <result property='nombre' column='c.nombre'/>
+    <id property='documento' column='c.documento'/>
+    
+	<result property='telefono' column='c.telefono'/>  
+	<result property='direccion' column='c.direccion'/> 
+	<result property='email' column='c.email'/>  
+	<result property='vetado' column='c.vetado'/>  	
+    <association property="propiedad5" javaType="DetalleDos"></association>      
+    <collection property='itemrentados' ofType='itemrentado'></collection>
+</resultMap>
 
-          	
+<resultMap type='itemrentado' id='itemrentadoResult'>
+    <id property='id' column='ir.id'/>
+    <result property='fechainiciorenta' column='ir.fechainiciorenta'/>
+    <result property='fechafinrenta' column='ir.fechafinrenta'/> 
+   
+</resultMap>
+
+<resultMap type='DetalleDos' id='DetalleDosResult'>
+    <id property='propiedadr' column='COLUMNAR'/>
+    <result property='propiedads' column='COLUMNAS'/>
+    <result property='propiedadt' column='COLUMNAT'/>        
+</resultMap>   
+
+<resultMap type='DetalleUno' id='DetalleUnoResult'>
+    <id property='propiedadx' column='COLUMNAX'/>
+    <result property='propiedady' column='COLUMNAY'/>
+    <result property='propiedadz' column='COLUMNAZ'/> 
+<association property="propiedadw" javaType="DetalleDos"></association>      
+</resultMap>  	
 </mapper>
