@@ -14,17 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+
 package edu.eci.cvds.samples.services.client;
-
-
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.sql.Date;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.*;
+import edu.eci.cvds.samples.entities.*;
 
 /**
  *
@@ -58,21 +61,32 @@ public class MyBatisExample {
      * @throws SQLException 
      */
     public static void main(String args[]) throws SQLException {
-        SqlSessionFactory sessionfact = getSqlSessionFactory();
-
-        SqlSession sqlss = sessionfact.openSession();
 
         
+        SqlSessionFactory sessionfact1 = getSqlSessionFactory();
+        SqlSession sqlss1 = sessionfact1.openSession();
+        ClienteMapper cm=sqlss1.getMapper(ClienteMapper.class);
+        System.out.println(cm.consultarCliente(123456));
+        
+        System.out.println(cm.consultarClientes());
+        
+        /*cm.agregarItemRentadoACliente(22, 123789, 3, new Date(2020,5,16), new Date(2020,6,16));*/
         //Crear el mapper y usarlo: 
         //ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
         //cm...
         
+        ItemMapper im=sqlss1.getMapper(ItemMapper.class);
+        /*Item it= new Item(new TipoItem(1,"Videojuegos"),15,"Mazda","Rapido y furioso",new Date(2000,06,10),6000,"Cuotas","transformer");
+        im.insertarItem(it);*/
+        
+        System.out.println(im.consultarItem(1));
+        System.out.println(im.consultarItems());
         
         
-        sqlss.commit();
+        sqlss1.commit();
         
         
-        sqlss.close();
+        sqlss1.close();
 
         
         

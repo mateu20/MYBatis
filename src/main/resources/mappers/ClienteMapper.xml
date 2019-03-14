@@ -12,13 +12,13 @@
     c.direccion,
     c.email,
     c.vetado,    
-    ir.id ,
+    ir.id,
     ir.fechainiciorenta ,
     ir.fechafinrenta ,    
-    i.id ,
-    i.nombre ,
-    i.descripcion ,
-    i.fechalanzamiento ,
+    i.id,
+    i.nombre,
+    i.descripcion,
+    i.fechalanzamiento,
     i.tarifaxdia ,
     i.formatorenta ,
     i.genero ,        
@@ -30,35 +30,61 @@
     left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id 
 </select>
 
+<select parameterType="map" id="consultarCliente" resultMap="ClienteResult">
+		select    
+    c.nombre,
+    c.documento,
+    c.telefono,
+    c.direccion,
+    c.email,
+    c.vetado,    
+    ir.id,
+    ir.fechainiciorenta ,
+    ir.fechafinrenta ,    
+    i.id,
+    i.nombre,
+    i.descripcion,
+    i.fechalanzamiento,
+    i.tarifaxdia ,
+    i.formatorenta ,
+    i.genero ,        
+    ti.id ,
+    ti.descripcion     
+    FROM VI_CLIENTES as c 
+    left join VI_ITEMRENTADO as ir on c.documento=ir.CLIENTES_documento 
+    left join VI_ITEMS as i on ir.ITEMS_id=i.id 
+    left join VI_TIPOITEM as ti on i.TIPOITEM_id=ti.id 
+    WHERE documento=#{idcli}
+</select>
+
+<insert id="agregarItemRentadoACliente" >
+	insert into VI_ITEMRENTADO
+	values (#{iditren},#{idcli},#{idite},#{fechaini},#{fechafin},null)
+ </insert>
+
+
      <resultMap type='Cliente' id='ClienteResult'>
-    <result property='nombre' column='c.nombre'/>
-    <id property='documento' column='c.documento'/>
-    
-	<result property='telefono' column='c.telefono'/>  
-	<result property='direccion' column='c.direccion'/> 
-	<result property='email' column='c.email'/>  
-	<result property='vetado' column='c.vetado'/>  	
-    <association property="propiedad5" javaType="DetalleDos"></association>      
-    <collection property='itemrentados' ofType='itemrentado'></collection>
+
+    <id property='documento' column='documento'/>
+    <result property='nombre' column='nombre'/>
+	<result property='telefono' column='telefono'/>  
+	<result property='direccion' column='direccion'/> 
+	<result property='email' column='email'/>  
+	<result property='vetado' column='vetado'/>  	
+    <collection property='rentados' ofType='ItemRentado' resultMap='ItemRentadoResult'></collection>
 </resultMap>
 
-<resultMap type='itemrentado' id='itemrentadoResult'>
-    <id property='id' column='ir.id'/>
-    <result property='fechainiciorenta' column='ir.fechainiciorenta'/>
-    <result property='fechafinrenta' column='ir.fechafinrenta'/> 
-   
+<resultMap type='ItemRentado' id='ItemRentadoResult'>
+    <id property='id' column='id'/>
+    <result property='fechainiciorenta' column='fechainiciorenta'/>
+    <result property='fechafinrenta' column='fechafinrenta'/> 
+	<association property="item" javaType="Item"  resultMap='edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper.ItemResult'></association>   
 </resultMap>
 
-<resultMap type='DetalleDos' id='DetalleDosResult'>
-    <id property='propiedadr' column='COLUMNAR'/>
-    <result property='propiedads' column='COLUMNAS'/>
-    <result property='propiedadt' column='COLUMNAT'/>        
-</resultMap>   
 
-<resultMap type='DetalleUno' id='DetalleUnoResult'>
-    <id property='propiedadx' column='COLUMNAX'/>
-    <result property='propiedady' column='COLUMNAY'/>
-    <result property='propiedadz' column='COLUMNAZ'/> 
-<association property="propiedadw" javaType="DetalleDos"></association>      
+<resultMap type='TipoItem' id='TipoItemResult'>
+    <id property='id' column='ti.id'/>
+    <result property='descripcion' column='ti.descripcion'/>
+
 </resultMap>  	
 </mapper>
