@@ -19,10 +19,10 @@ import org.apache.ibatis.annotations.Param;
 public class MyBATISClienteDAO implements ClienteDAO{
 
   @Inject
-  private ClienteMapper clienteMapper;    
+  private ClienteMapper clienteMapper = new ClienteMapper();    
 
   @Override
-  public void save(int id ,int idc, int idit, Date fechainicio,Date fechafin) throws PersistenceException{
+  public void save(int id ,long idc, int idit, Date fechainicio,Date fechafin) throws PersistenceException{
   try{
 	  clienteMapper.agregarItemRentadoACliente(id,idc, idit, fechainicio, fechafin);
   }
@@ -33,7 +33,7 @@ public class MyBATISClienteDAO implements ClienteDAO{
   }
 
   @Override
-  public Cliente load(int id) throws PersistenceException {
+  public Cliente load(long id) throws PersistenceException {
   try{
       return clienteMapper.consultarCliente(id);
   }
