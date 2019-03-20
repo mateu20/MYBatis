@@ -19,7 +19,7 @@ import org.apache.ibatis.annotations.Param;
 public class MyBATISClienteDAO implements ClienteDAO{
 
   @Inject
-  private ClienteMapper clienteMapper = new ClienteMapper();    
+  private ClienteMapper clienteMapper;    
 
   @Override
   public void save(int id ,long idc, int idit, Date fechainicio,Date fechafin) throws PersistenceException{
